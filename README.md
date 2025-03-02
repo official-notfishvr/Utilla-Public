@@ -4,6 +4,8 @@ A PC library for Gorilla Tag that handles various room-related things
 # ⚠️ WARNING!
 This is not an official release of Utilla. It has been modified to treat EVERY room like a modded lobby. You may experience unexpected behaviour, or bans. I take no responsibility for any harm caused by this modification.
 
+If you wish for a legal version of Utilla, please look at the original repository. [https://github.com/Not-A-Bird-07/Utilla](https://github.com/Not-A-Bird-07/Utilla)
+
 ## Installation
 If your game isn't modded with BepInEx, DO THAT FIRST! Simply go to the [latest BepinEx release](https://github.com/BepInEx/BepInEx/releases) and extract BepinEx_x64_VERSION.zip directly into your game's folder, then run the game once to install BepinEx properly.
 
