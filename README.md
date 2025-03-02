@@ -1,5 +1,6 @@
 # Utilla-Public
-A PC library for Gorilla Tag that handles various room-related things
+A PC library for Gorilla Tag that handles various room-related things that works in the latest version
+<img src="https://i.imgur.com/NxoOhAj.png">
 
 # ⚠️ WARNING!
 This is not an official release of Utilla. It has been modified to treat EVERY room like a modded lobby. You may experience unexpected behaviour, or bans. I take no responsibility for any harm caused by this modification.
