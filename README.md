@@ -1,20 +1,14 @@
 # Utilla
 
-A PC library for Gorilla Tag that handles various room-related things (and more?)
+A PC library for Gorilla Tag that handles various room-related things
 
 ## Installation
 
-### Automatic installation
-If you don't want to manually install, you can install this mod with the [Monke Mod Manager](https://github.com/DeadlyKitten/MonkeModManager/releases/latest)
 ### Manual Installation
 
-If your game isn't modded with BepinEx, DO THAT FIRST! Simply go to the [latest BepinEx release](https://github.com/BepInEx/BepInEx/releases) and extract BepinEx_x64_VERSION.zip directly into your game's folder, then run the game once to install BepinEx properly.
+If your game isn't modded with BepInEx, DO THAT FIRST! Simply go to the [latest BepinEx release](https://github.com/BepInEx/BepInEx/releases) and extract BepinEx_x64_VERSION.zip directly into your game's folder, then run the game once to install BepinEx properly.
 
-Next, go to the [latest release of this mod](https://github.com/legoandmars/Utilla/releases/latest) and extract it directly into your game's folder. Make sure it's extracted directly into your game's folder and not into a subfolder!
-
-## For Developers
-### **Important:** Utilla 1.5.0 Update
-With the release of Utilla 1.5.0, mods are required to only function in modded gamemodes, instead of in any private lobby. Utilla provides easy to use attributes to make this transition as painless as possible. See [this commit](https://github.com/Graicc/SpaceMonke/commit/85074d5947856f5c8d673b141056d26fcc267115) for an example of updating your mod to work with the new system.
+Next, go to the [latest release of this mod](https://github.com/iiDk-the-actual/Utilla-Public/releases/latest) and extract it directly into your game's folder. Make sure it's extracted directly into your game's folder and not into a subfolder!
 
 ### Enabling your mod
 
