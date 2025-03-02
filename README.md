@@ -1,11 +1,10 @@
-# Utilla
-
+# Utilla-Public
 A PC library for Gorilla Tag that handles various room-related things
 
+# ⚠️ WARNING!
+This is not an official release of Utilla. It has been modified to treat EVERY room like a modded lobby. You may experience unexpected behaviour, or bans. I take no responsibility for any harm caused by this modification.
+
 ## Installation
-
-### Manual Installation
-
 If your game isn't modded with BepInEx, DO THAT FIRST! Simply go to the [latest BepinEx release](https://github.com/BepInEx/BepInEx/releases) and extract BepinEx_x64_VERSION.zip directly into your game's folder, then run the game once to install BepinEx properly.
 
 Next, go to the [latest release of this mod](https://github.com/iiDk-the-actual/Utilla-Public/releases/latest) and extract it directly into your game's folder. Make sure it's extracted directly into your game's folder and not into a subfolder!
