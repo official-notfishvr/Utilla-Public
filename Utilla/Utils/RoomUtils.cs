@@ -1,12 +1,5 @@
-﻿using BepInEx;
-using GorillaNetworking;
-using Photon.Pun;
-using System;
+﻿using GorillaNetworking;
 using System.Linq;
-using System.Reflection;
-using UnityEngine;
-using Utilla.Models;
-using Utilla.Tools;
 
 namespace Utilla.Utils
 {
@@ -26,6 +19,7 @@ namespace Utilla.Utils
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
+        /*
         /// <summary>
         /// Joins a private room from a sepcifc room code.
         /// </summary>
@@ -129,5 +123,6 @@ namespace Utilla.Utils
                 defaultQueue = null;
             }
         }
+        */
     }
 }
