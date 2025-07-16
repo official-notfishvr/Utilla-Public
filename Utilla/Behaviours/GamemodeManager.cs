@@ -1,7 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Bootstrap;
 using GorillaGameModes;
+using GorillaLocomotion;
 using GorillaNetworking;
+using Photon.Realtime;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,7 +124,16 @@ namespace Utilla.Behaviours
                         Plugin = plugin,
                         Gamemodes = [.. gamemodes],
                         OnGamemodeJoin = CreateJoinLeaveAction(plugin, type, typeof(ModdedGamemodeJoinAttribute)),
-                        OnGamemodeLeave = CreateJoinLeaveAction(plugin, type, typeof(ModdedGamemodeLeaveAttribute))
+                        OnGamemodeLeave = CreateJoinLeaveAction(plugin, type, typeof(ModdedGamemodeLeaveAttribute)),
+                        OnGamemodeStart = CreateJoinLeaveAction(plugin, type, typeof(ModdedGamemodeStartAttribute)),
+                        OnGamemodeEnd = CreateJoinLeaveAction(plugin, type, typeof(ModdedGamemodeEndAttribute)),
+                        OnGamemodeUpdate = CreateJoinLeaveAction(plugin, type, typeof(ModdedGamemodeUpdateAttribute)),
+                        OnGamemodePlayerJoin = CreatePlayerAction(plugin, type, typeof(ModdedGamemodePlayerJoinAttribute)),
+                        OnGamemodePlayerLeave = CreatePlayerAction(plugin, type, typeof(ModdedGamemodePlayerLeaveAttribute)),
+                        OnGamemodePlayerTag = CreatePlayerTagAction(plugin, type, typeof(ModdedGamemodePlayerTagAttribute)),
+                        OnGamemodePhotonPlayerJoin = CreatePhotonPlayerAction(plugin, type, typeof(ModdedGamemodePlayerJoinAttribute)),
+                        OnGamemodePhotonPlayerLeave = CreatePhotonPlayerAction(plugin, type, typeof(ModdedGamemodePlayerLeaveAttribute)),
+                        OnGamemodePhotonPlayerTag = CreatePhotonPlayerTagAction(plugin, type, typeof(ModdedGamemodePlayerTagAttribute))
                     });
                 }
             }
@@ -156,6 +167,154 @@ namespace Utilla.Behaviours
                 }
 
                 action += Expression.Lambda<Action<string>>(methodCall, paramExpression).Compile();
+            }
+
+            return action;
+        }
+
+        Action<string, GTPlayer> CreatePlayerAction(BaseUnityPlugin plugin, Type baseType, Type attribute)
+        {
+            ParameterExpression gamemodeParam = Expression.Parameter(typeof(string));
+            ParameterExpression playerParam = Expression.Parameter(typeof(GTPlayer));
+            ParameterExpression[] paramExpression = [gamemodeParam, playerParam];
+            ConstantExpression instance = Expression.Constant(plugin);
+            BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+            Action<string, GTPlayer> action = null;
+            foreach (var method in baseType.GetMethods(bindingFlags).Where(m => m.GetCustomAttribute(attribute) != null))
+            {
+                var parameters = method.GetParameters();
+                MethodCallExpression methodCall;
+                if (parameters.Length == 0)
+                {
+                    methodCall = Expression.Call(instance, method);
+                }
+                else if (parameters.Length == 1 && parameters[0].ParameterType == typeof(string))
+                {
+                    methodCall = Expression.Call(instance, method, gamemodeParam);
+                }
+                else if (parameters.Length == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(GTPlayer))
+                {
+                    methodCall = Expression.Call(instance, method, gamemodeParam, playerParam);
+                }
+                else
+                {
+                    continue;
+                }
+
+                action += Expression.Lambda<Action<string, GTPlayer>>(methodCall, paramExpression).Compile();
+            }
+
+            return action;
+        }
+
+        Action<string, GTPlayer, GTPlayer> CreatePlayerTagAction(BaseUnityPlugin plugin, Type baseType, Type attribute)
+        {
+            ParameterExpression gamemodeParam = Expression.Parameter(typeof(string));
+            ParameterExpression taggerParam = Expression.Parameter(typeof(GTPlayer));
+            ParameterExpression taggedParam = Expression.Parameter(typeof(GTPlayer));
+            ParameterExpression[] paramExpression = [gamemodeParam, taggerParam, taggedParam];
+            ConstantExpression instance = Expression.Constant(plugin);
+            BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+            Action<string, GTPlayer, GTPlayer> action = null;
+            foreach (var method in baseType.GetMethods(bindingFlags).Where(m => m.GetCustomAttribute(attribute) != null))
+            {
+                var parameters = method.GetParameters();
+                MethodCallExpression methodCall;
+                if (parameters.Length == 0)
+                {
+                    methodCall = Expression.Call(instance, method);
+                }
+                else if (parameters.Length == 1 && parameters[0].ParameterType == typeof(string))
+                {
+                    methodCall = Expression.Call(instance, method, gamemodeParam);
+                }
+                else if (parameters.Length == 3 && parameters[0].ParameterType == typeof(string) && 
+                         parameters[1].ParameterType == typeof(GTPlayer) && parameters[2].ParameterType == typeof(GTPlayer))
+                {
+                    methodCall = Expression.Call(instance, method, gamemodeParam, taggerParam, taggedParam);
+                }
+                else
+                {
+                    continue;
+                }
+
+                action += Expression.Lambda<Action<string, GTPlayer, GTPlayer>>(methodCall, paramExpression).Compile();
+            }
+
+            return action;
+        }
+
+        Action<string, Player> CreatePhotonPlayerAction(BaseUnityPlugin plugin, Type baseType, Type attribute)
+        {
+            ParameterExpression gamemodeParam = Expression.Parameter(typeof(string));
+            ParameterExpression playerParam = Expression.Parameter(typeof(Player));
+            ParameterExpression[] paramExpression = [gamemodeParam, playerParam];
+            ConstantExpression instance = Expression.Constant(plugin);
+            BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+            Action<string, Player> action = null;
+            foreach (var method in baseType.GetMethods(bindingFlags).Where(m => m.GetCustomAttribute(attribute) != null))
+            {
+                var parameters = method.GetParameters();
+                MethodCallExpression methodCall;
+                if (parameters.Length == 0)
+                {
+                    methodCall = Expression.Call(instance, method);
+                }
+                else if (parameters.Length == 1 && parameters[0].ParameterType == typeof(string))
+                {
+                    methodCall = Expression.Call(instance, method, gamemodeParam);
+                }
+                else if (parameters.Length == 2 && parameters[0].ParameterType == typeof(string) && parameters[1].ParameterType == typeof(Player))
+                {
+                    methodCall = Expression.Call(instance, method, gamemodeParam, playerParam);
+                }
+                else
+                {
+                    continue;
+                }
+
+                action += Expression.Lambda<Action<string, Player>>(methodCall, paramExpression).Compile();
+            }
+
+            return action;
+        }
+
+        Action<string, Player, Player> CreatePhotonPlayerTagAction(BaseUnityPlugin plugin, Type baseType, Type attribute)
+        {
+            ParameterExpression gamemodeParam = Expression.Parameter(typeof(string));
+            ParameterExpression taggerParam = Expression.Parameter(typeof(Player));
+            ParameterExpression taggedParam = Expression.Parameter(typeof(Player));
+            ParameterExpression[] paramExpression = [gamemodeParam, taggerParam, taggedParam];
+            ConstantExpression instance = Expression.Constant(plugin);
+            BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+
+            Action<string, Player, Player> action = null;
+            foreach (var method in baseType.GetMethods(bindingFlags).Where(m => m.GetCustomAttribute(attribute) != null))
+            {
+                var parameters = method.GetParameters();
+                MethodCallExpression methodCall;
+                if (parameters.Length == 0)
+                {
+                    methodCall = Expression.Call(instance, method);
+                }
+                else if (parameters.Length == 1 && parameters[0].ParameterType == typeof(string))
+                {
+                    methodCall = Expression.Call(instance, method, gamemodeParam);
+                }
+                else if (parameters.Length == 3 && parameters[0].ParameterType == typeof(string) && 
+                         parameters[1].ParameterType == typeof(Player) && parameters[2].ParameterType == typeof(Player))
+                {
+                    methodCall = Expression.Call(instance, method, gamemodeParam, taggerParam, taggedParam);
+                }
+                else
+                {
+                    continue;
+                }
+
+                action += Expression.Lambda<Action<string, Player, Player>>(methodCall, paramExpression).Compile();
             }
 
             return action;
@@ -250,12 +409,9 @@ namespace Utilla.Behaviours
 
             foreach (var pluginInfo in pluginInfos)
             {
-                Logging.Info($"Plugin {pluginInfo.Plugin.Info.Metadata.Name}: {string.Join(", ", pluginInfo.Gamemodes.Select(gm => gm.ID))}");
-
                 try
                 {
-                    pluginInfo.OnGamemodeJoin?.Invoke(gamemode);//
-                    Logging.Message("Plugin is suitable for game mode");
+                    pluginInfo.OnGamemodeJoin?.Invoke(gamemode);
                 }
                 catch (Exception ex)
                 {
@@ -273,19 +429,200 @@ namespace Utilla.Behaviours
 
             foreach (var pluginInfo in pluginInfos)
             {
-                if (pluginInfo.Gamemodes.Any(x => gamemode.Contains(x.ID)))
+                try
                 {
-                    try
-                    {
-                        pluginInfo.OnGamemodeLeave?.Invoke(gamemode);
-                        //Logging.Info($"Plugin {pluginInfo.Plugin.Info.Metadata.Name} is suitable for game mode");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Fatal($"Leave action could not be called");
-                        Logging.Error(ex);
-                    }
+                    pluginInfo.OnGamemodeLeave?.Invoke(gamemode);
                 }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Leave action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnGamemodeStart(string gamemode)
+        {
+            Logging.Info($"Gamemode started: {gamemode}");
+
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodeStart?.Invoke(gamemode);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Gamemode start action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnGamemodeEnd(string gamemode)
+        {
+            Logging.Info($"Gamemode ended: {gamemode}");
+
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodeEnd?.Invoke(gamemode);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Gamemode end action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnGamemodeUpdate(string gamemode)
+        {
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodeUpdate?.Invoke(gamemode);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Gamemode update action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnPlayerJoin(string gamemode, GTPlayer player)
+        {
+            Logging.Info($"Player joined gamemode: {gamemode}");
+
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodePlayerJoin?.Invoke(gamemode, player);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Player join action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnPlayerLeave(string gamemode, GTPlayer player)
+        {
+            Logging.Info($"Player left gamemode: {gamemode}");
+
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodePlayerLeave?.Invoke(gamemode, player);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Player leave action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnPlayerTag(string gamemode, GTPlayer tagger, GTPlayer tagged)
+        {
+            Logging.Info($"Player tagged: {gamemode}");
+
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodePlayerTag?.Invoke(gamemode, tagger, tagged);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Player tag action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnPhotonPlayerJoin(string gamemode, Player player)
+        {
+            Logging.Info($"Photon player joined gamemode: {gamemode}, Player: {player?.UserId}");
+
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodePhotonPlayerJoin?.Invoke(gamemode, player);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Photon player join action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnPhotonPlayerLeave(string gamemode, Player player)
+        {
+            Logging.Info($"Photon player left gamemode: {gamemode}, Player: {player?.UserId}");
+
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodePhotonPlayerLeave?.Invoke(gamemode, player);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Photon player leave action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        internal void OnPhotonPlayerTag(string gamemode, Player tagger, Player tagged)
+        {
+            Logging.Info($"Photon player tagged: {gamemode}, Tagger: {tagger?.UserId}, Tagged: {tagged?.UserId}");
+
+            foreach (var pluginInfo in pluginInfos)
+            {
+                try
+                {
+                    pluginInfo.OnGamemodePhotonPlayerTag?.Invoke(gamemode, tagger, tagged);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Photon player tag action could not be called");
+                    Logging.Error(ex);
+                }
+            }
+        }
+
+        private float updateTimer = 0f;
+        private const float UPDATE_INTERVAL = 1f;
+
+        private void Update()
+        {
+            if (NetworkSystem.Instance != null && NetworkSystem.Instance.InRoom)
+            {
+                updateTimer += Time.deltaTime;
+                
+                if (updateTimer >= UPDATE_INTERVAL)
+                {
+                    string currentGamemode = GorillaComputer.instance.currentGameMode.Value;
+                    if (!string.IsNullOrEmpty(currentGamemode))
+                    {
+                        OnGamemodeUpdate(currentGamemode);
+                    }
+                    updateTimer = 0f;
+                }
+            }
+            else
+            {
+                updateTimer = 0f;
             }
         }
     }
