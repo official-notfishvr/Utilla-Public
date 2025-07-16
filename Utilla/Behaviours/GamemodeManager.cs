@@ -252,22 +252,16 @@ namespace Utilla.Behaviours
             {
                 Logging.Info($"Plugin {pluginInfo.Plugin.Info.Metadata.Name}: {string.Join(", ", pluginInfo.Gamemodes.Select(gm => gm.ID))}");
 
-                if (pluginInfo.Gamemodes.Any(x => gamemode.Contains(x.ID)))
+                try
                 {
-                    try
-                    {
-                        pluginInfo.OnGamemodeJoin?.Invoke(gamemode);//
-                        Logging.Message("Plugin is suitable for game mode");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Fatal($"Join action could not be called");
-                        Logging.Error(ex);
-                    }
-                    continue;
+                    pluginInfo.OnGamemodeJoin?.Invoke(gamemode);//
+                    Logging.Message("Plugin is suitable for game mode");
                 }
-
-                Logging.Message("Plugin is unsupported for game mode");
+                catch (Exception ex)
+                {
+                    Logging.Fatal($"Join action could not be called");
+                    Logging.Error(ex);
+                }
             }
         }
 
