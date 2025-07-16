@@ -1,11 +1,10 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29721.120
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilla", "Utilla\Utilla.csproj", "{278A2D28-9755-4CD6-BD9E-600900035B3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamemodeTestPlugin", "GamemodeTestPlugin\GamemodeTestPlugin.csproj", "{C3274077-AC03-FC9B-DB47-22C7AE8C4708}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamemodeTestPlugin", "GamemodeTestPlugin\GamemodeTestPlugin.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,15 +16,15 @@ Global
 		{278A2D28-9755-4CD6-BD9E-600900035B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{278A2D28-9755-4CD6-BD9E-600900035B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{278A2D28-9755-4CD6-BD9E-600900035B3B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3274077-AC03-FC9B-DB47-22C7AE8C4708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3274077-AC03-FC9B-DB47-22C7AE8C4708}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3274077-AC03-FC9B-DB47-22C7AE8C4708}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3274077-AC03-FC9B-DB47-22C7AE8C4708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {CB547B86-8115-4257-A959-482CD95B03CC}
+		SolutionGuid = {12345678-1234-5678-9ABC-DEF123456789}
 	EndGlobalSection
-EndGlobal
+EndGlobal 
